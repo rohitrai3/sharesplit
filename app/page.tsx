@@ -27,34 +27,11 @@ export default function Home() {
           <h1>Split your shares with your friends</h1>
         </div>
         <div className="flex justify-center">
-          <form>
-            <div className="mb-5">
-              <input
-                className="border-2 border-gold-dark rounded-xl w-[250px] p-3 text-xs bg-transparent"
-                type="text"
-                required
-                placeholder="Username"
-              />
-            </div>
-            <div className="mb-10">
-              <input
-                className="border-2 border-gold-dark rounded-xl w-[250px] p-3 text-xs bg-transparent"
-                type="password"
-                required
-                placeholder="Password"
-              />
-            </div>
-            <div className="flex justify-between">
-              <input
-                className="bg-gold-light text-black px-6 py-3 rounded-xl font-black"
-                type="submit"
-                value="Sign in"
-              />
-              <button className="bg-gold-dark text-black px-6 py-3 rounded-xl font-black">
-                Sign up
-              </button>
-            </div>
-          </form>
+          <a href="/api/auth/login">
+            <button className="bg-gold-dark text-black px-6 py-3 rounded-xl font-black">
+              Login
+            </button>
+          </a>
         </div>
       </div>
     </div>
