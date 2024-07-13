@@ -31,3 +31,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.primary-button {
+  background-color: theme("colors.gold-light");
+  color: theme("colors.black");
+  padding: theme("padding.3") theme("padding.6");
+  border-radius: theme("borderRadius.xl");
+  font-weight: theme("fontWeight.black");
+}

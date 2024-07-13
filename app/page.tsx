@@ -28,9 +28,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center">
           <a href="/api/auth/login">
-            <button className="bg-gold-dark text-black px-6 py-3 rounded-xl font-black">
-              Login
-            </button>
+            <button className="primary-button">Login</button>
           </a>
         </div>
       </div>
