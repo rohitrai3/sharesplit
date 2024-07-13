@@ -39,3 +39,11 @@ body {
   border-radius: theme("borderRadius.xl");
   font-weight: theme("fontWeight.black");
 }
+
+.secondary-button {
+  background-color: theme("colors.gold-dark");
+  color: theme("colors.black");
+  padding: theme("padding.3") theme("padding.6");
+  border-radius: theme("borderRadius.xl");
+  font-weight: theme("fontWeight.black");
+}
