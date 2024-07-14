@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Home() {
+export default function Landing() {
   return (
     <div className="w-dvw h-dvh place-content-center">
       <div>
