@@ -38,6 +38,7 @@ body {
   padding: theme("padding.3") theme("padding.6");
   border-radius: theme("borderRadius.xl");
   font-weight: theme("fontWeight.black");
+  font-size: theme("fontSize.xs");
 }
 
 .secondary-button {
@@ -46,4 +47,15 @@ body {
   padding: theme("padding.3") theme("padding.6");
   border-radius: theme("borderRadius.xl");
   font-weight: theme("fontWeight.black");
+  font-size: theme("fontSize.xs");
+}
+
+.input-field {
+  background-color: theme("backgroundColor.transparent");
+  border-width: theme("borderWidth.2");
+  border-radius: theme("borderRadius.xl");
+  border-color: theme("borderColor.gold-light");
+  font-size: theme("fontSize.xs");
+  padding: theme("padding.3");
+  width: theme("width.96");
 }
