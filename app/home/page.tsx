@@ -1,13 +1,16 @@
 import Link from "next/link";
-import Logout from "../buttons/logout";
-import User from "../user";
+import Logout from "../components/buttons/logout";
+import User from "../components/user";
+import Group from "../components/group";
 
 export default function Home() {
   return (
     <div className="w-dvh h-dvh flex flex-col p-6">
       <User />
-      <div className="flex-1 flex flex-col-reverse my-6 text-xl">
-        Sample group
+      <div className="flex-1 flex flex-col-reverse m-6 text-xl">
+        <Link href="/view/group">
+          <Group />
+        </Link>
       </div>
       <div className="flex justify-between">
         <Link href="/create/group">

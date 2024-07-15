@@ -1,7 +1,7 @@
 import Image from "next/image";
-import User from "../../user";
-import Logout from "../../buttons/logout";
-import Cancel from "../../buttons/cancel";
+import User from "../../components/user";
+import Logout from "../../components/buttons/logout";
+import Cancel from "../../components/buttons/cancel";
 
 export default function CreateGroup() {
   return (
