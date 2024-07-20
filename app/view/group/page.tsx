@@ -2,10 +2,11 @@ import Image from "next/image";
 import User from "@/app/components/user";
 import Logout from "@/app/components/buttons/logout";
 import Group from "@/app/components/group";
+import Link from "next/link";
 
 export default function ViewGroup() {
   return (
-    <div className="w-dvh h-dvh flex flex-col p-6">
+    <div className="w-dvh h-dvh flex flex-col p-6 space-y-10">
       <User />
       <div className="flex-1 flex flex-col space-y-10">
         <Group />
@@ -14,23 +15,23 @@ export default function ViewGroup() {
           <p>choji owes ₹70 to you</p>
         </div>
         <ul className="text-xl ml-6">
-          <li className="flex justify-between space-x-1">
+          <li className="flex space-x-1">
             <p>Breakfast</p>
-            <p className="overflow-hidden">
+            <p className="overflow-hidden opacity-50">
               .........................................................................................................................................................
             </p>
             <p className="text-gold-light">₹480</p>
           </li>
-          <li className="flex justify-between space-x-1">
+          <li className="flex space-x-1">
             <p>Lunch</p>
-            <p className="overflow-hidden">
+            <p className="overflow-hidden opacity-50">
               .........................................................................................................................................................
             </p>
             <p className="text-gold-light">₹630</p>
           </li>
-          <li className="flex justify-between space-x-1">
+          <li className="flex space-x-1">
             <p>Dinner</p>
-            <p className="overflow-hidden">
+            <p className="overflow-hidden opacity-50">
               .........................................................................................................................................................
             </p>
             <p className="text-gold-light">₹180</p>
@@ -38,7 +39,9 @@ export default function ViewGroup() {
         </ul>
       </div>
       <div className="flex justify-between">
-        <button className="primary-button">Add expense</button>
+        <Link href="/create/expense">
+          <button className="primary-button">Add expense</button>
+        </Link>
         <Logout />
       </div>
     </div>

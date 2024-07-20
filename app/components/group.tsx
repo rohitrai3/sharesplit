@@ -6,7 +6,7 @@ export default function Group() {
       <Image src="/group_icon.svg" alt="Group icon" width={64} height={64} />
       <div>
         <h2 className="text-xl">Ino-Shika-Cho</h2>
-        <p className="text-xs">ino, shikamaru, choji</p>
+        <p className="text-xs opacity-50">ino, shikamaru, choji</p>
       </div>
     </div>
   );

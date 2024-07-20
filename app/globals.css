@@ -59,3 +59,11 @@ body {
   padding: theme("padding.3");
   width: theme("width.96");
 }
+
+.input-field-amount {
+  background-color: theme("backgroundColor.transparent");
+  border-width: 0 0 theme("borderWidth.2") 0;
+  border-color: theme("borderColor.gold-light");
+  font-size: theme("fontSize.xs");
+  width: theme("width.12");
+}
