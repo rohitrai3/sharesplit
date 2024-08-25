@@ -6,10 +6,11 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
-  const { user } = await getSession();
+  const session = await getSession();
+  const user = session?.user;
   const owner: Member | null = await prisma.member.findUnique({
     where: {
-      name: user.name,
+      name: user?.name,
     },
   });
   const name: string = formData.get("name")?.toString()!;

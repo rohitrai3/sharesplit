@@ -7,7 +7,7 @@ export default function CreateExpense() {
   return (
     <div className="w-dvw h-dvh flex flex-col p-6 space-y-10">
       <User />
-      <Group />
+      <Group name="Ino-Shika-Cho" members={[]} />
       <div className="flex-1 flex justify-center items-end">
         <form className="w-96 space-y-5">
           <div className="flex flex-col space-y-2">

@@ -3,6 +3,7 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Group from "../components/group";
 import { useEffect, useState } from "react";
+import { GroupItem } from "../types";
 
 export default function Groups() {
   const { user } = useUser();
@@ -13,7 +14,6 @@ export default function Groups() {
       fetch(`http://localhost:3000/api/member/get/groups`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("data: ", data);
           setGroups(data);
         })
         .catch((err) => console.log("error: ", err));
@@ -22,7 +22,7 @@ export default function Groups() {
 
   return (
     <div className="space-y-10">
-      {groups.map((group) => (
+      {groups.map((group: GroupItem) => (
         <Group key={group.id} name={group.name} members={group.members} />
       ))}
     </div>

@@ -5,8 +5,9 @@ import { NextRequest } from "next/server";
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-  const { user } = await getSession();
-  const name = user.name;
+  const session = await getSession();
+  const user = session?.user;
+  const name = user?.name;
   const member = await prisma.member.findUnique({
     where: {
       name: name,
@@ -20,5 +21,5 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  return Response.json(member.groups);
+  return Response.json(member?.groups);
 }

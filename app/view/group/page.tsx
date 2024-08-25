@@ -1,4 +1,3 @@
-import Image from "next/image";
 import User from "@/app/components/user";
 import Logout from "@/app/components/buttons/logout";
 import Group from "@/app/components/group";
@@ -9,7 +8,7 @@ export default function ViewGroup() {
     <div className="w-dvh h-dvh flex flex-col p-6 space-y-10">
       <User />
       <div className="flex-1 flex flex-col space-y-10">
-        <Group />
+        <Group name="Ino-Shika-Cho" members={[]} />
         <div className="text-sm text-gold-light ml-6">
           <p>You owe ₹70 to ino</p>
           <p>choji owes ₹70 to you</p>
