@@ -19,7 +19,6 @@ model Member {
 model Group {
   id        Int       @id @default(autoincrement())
   name      String
-  image     Bytes
   members   Member[]
   expenses  Expense[]
   createdAt DateTime  @default(now())

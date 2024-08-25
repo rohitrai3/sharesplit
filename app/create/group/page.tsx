@@ -1,4 +1,3 @@
-import Image from "next/image";
 import User from "../../components/user";
 import Logout from "../../components/buttons/logout";
 import Cancel from "../../components/buttons/cancel";
@@ -8,14 +7,7 @@ export default function CreateGroup() {
     <div className="w-dvh h-dvh flex flex-col p-6">
       <User />
       <div className="flex-1 flex flex-col justify-center items-center">
-        <Image
-          className="mb-20"
-          src="/group_icon.svg"
-          alt="Group icon"
-          width={128}
-          height={128}
-        />
-        <form className="space-y-10">
+        <form className="space-y-10" action="/api/group/create" method="POST">
           <div className="space-y-0.5">
             <label className="text-sm">Enter group name</label>
             <br />
@@ -23,6 +15,7 @@ export default function CreateGroup() {
               className="input-field"
               type="text"
               placeholder="Ino-Shika-Cho"
+              name="name"
               required
             />
           </div>
@@ -33,6 +26,7 @@ export default function CreateGroup() {
               className="input-field"
               type="text"
               placeholder="ino, shikamaru, choji"
+              name="members"
             />
           </div>
           <br />
