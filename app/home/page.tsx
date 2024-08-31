@@ -11,7 +11,7 @@ export default function Home() {
         <Groups />
       </div>
       <div className="flex justify-between">
-        <Link href="/create/group">
+        <Link href="/group/create">
           <button className="primary-button">Create group</button>
         </Link>
         <Logout />
