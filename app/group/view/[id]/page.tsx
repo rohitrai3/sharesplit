@@ -50,7 +50,9 @@ export default async function ViewGroup({
         </ul>
       </div>
       <div className="flex justify-between">
-        <Link href="/create/expense">
+        <Link
+          href={{ pathname: "/expense/create", query: { groupId: params.id } }}
+        >
           <button className="primary-button">Add expense</button>
         </Link>
         <Logout />
