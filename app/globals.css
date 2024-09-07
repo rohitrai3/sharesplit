@@ -39,6 +39,7 @@ body {
   border-radius: theme("borderRadius.xl");
   font-weight: theme("fontWeight.black");
   font-size: theme("fontSize.xs");
+  cursor: theme("cursor.pointer");
 }
 
 .secondary-button {
@@ -48,6 +49,7 @@ body {
   border-radius: theme("borderRadius.xl");
   font-weight: theme("fontWeight.black");
   font-size: theme("fontSize.xs");
+  cursor: theme("cursor.pointer");
 }
 
 .input-field {
