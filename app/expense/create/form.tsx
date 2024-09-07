@@ -1,23 +1,34 @@
 "use client";
 
 import Cancel from "@/app/components/buttons/cancel";
-import { CreateExpenseInput } from "@/app/types";
+import { CreateExpenseInput, MemberAmount } from "@/app/types";
+import { Member } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import MemberInput from "./memberInput";
 
 export default function Form() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [members, setMembers] = useState<Member[]>();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
+    const memberAmountList: MemberAmount[] = [];
+    members?.forEach((member) => {
+      memberAmountList.push({
+        name: member.name,
+        amount: Number(formData.get(`${member.name}Amount`)),
+      });
+    });
     const createExpenseInput: CreateExpenseInput = {
       name: formData.get("name")?.toString()!,
       amount: Number(formData.get("amount")?.toString()!),
       groudId: Number(searchParams.get("groupId")),
+      memberAmountList: memberAmountList,
     };
 
     await fetch(`/api/expense/create`, {
@@ -30,6 +41,13 @@ export default function Form() {
 
     router.push(`/group/view/${searchParams.get("groupId")}`);
   }
+
+  useEffect(() => {
+    fetch(`/api/group/get/${Number(searchParams.get("groupId"))}`)
+      .then((res) => res.json())
+      .then((data) => setMembers(data.members))
+      .catch((err) => console.log("Error fetching group.", err));
+  }, []);
 
   return (
     <form className="w-96 space-y-5" onSubmit={onSubmit}>
@@ -57,36 +75,12 @@ export default function Form() {
         <label className="text-sm">Select members</label>
         <label className="text-sm">Enter amount</label>
       </div>
-      <input className="mr-2" type="checkbox" name="Select all" />
-      <label className="text-sm">Select all</label>
       <ul className="space-y-5">
-        <li className="flex space-x-2">
-          <input type="checkbox" name="shikamaru" />
-          <label className="text-sm">shikamaru</label>
-          <p className="overflow-hidden opacity-50">
-            .........................................................................................................................................................
-          </p>
-          <label className="text-sm">₹</label>
-          <input className="input-field-amount" type="text" placeholder="0" />
-        </li>
-        <li className="flex space-x-2">
-          <input type="checkbox" name="choji" />
-          <label className="text-sm">choji</label>
-          <p className="overflow-hidden opacity-50">
-            .........................................................................................................................................................
-          </p>
-          <label className="text-sm">₹</label>
-          <input className="input-field-amount" type="text" placeholder="0" />
-        </li>
-        <li className="flex space-x-2">
-          <input type="checkbox" name="ino" />
-          <label className="text-sm">ino</label>
-          <p className="overflow-hidden opacity-50">
-            .........................................................................................................................................................
-          </p>
-          <label className="text-sm">₹</label>
-          <input className="input-field-amount" type="text" placeholder="0" />
-        </li>
+        {members?.map((member) => (
+          <li key={member.id}>
+            <MemberInput name={member.name} />
+          </li>
+        ))}
       </ul>
       <div className="flex justify-between">
         <input className="primary-button" type="submit" value="Save" />

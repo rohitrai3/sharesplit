@@ -14,6 +14,7 @@ model Member {
   groups    Group[]
   expenses  Expense[]
   createdAt DateTime  @default(now())
+  pays      Pay[]
 }
 
 model Group {
@@ -28,9 +29,20 @@ model Expense {
   id        Int      @id @default(autoincrement())
   name      String
   amount    Float
-  member    Member   @relation(fields: [userId], references: [id])
-  userId    Int
+  member    Member   @relation(fields: [memberId], references: [id])
   group     Group    @relation(fields: [groupId], references: [id])
   groupId   Int
   createdAt DateTime @default(now())
+  pays      Pay[]
+  memberId  Int
+}
+
+model Pay {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  payee     Member   @relation(fields: [memberId], references: [id])
+  expense   Expense  @relation(fields: [expenseId], references: [id])
+  createdAt DateTime @default(now())
+  expenseId Int
+  memberId  Int
 }

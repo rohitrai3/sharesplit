@@ -6,4 +6,10 @@ export type CreateExpenseInput = {
   name: string;
   amount: number;
   groudId: number;
+  memberAmountList: MemberAmount[];
+};
+
+export type MemberAmount = {
+  name: string;
+  amount: number;
 };

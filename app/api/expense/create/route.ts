@@ -1,7 +1,7 @@
 import { CreateExpenseInput } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
 import { Group, Member, Prisma, PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -29,8 +29,45 @@ export async function POST(request: NextRequest) {
     },
   };
 
-  await prisma.expense.create({
+  const expense = await prisma.expense.create({
     data: expenseInput,
+  });
+
+  const payInput: Prisma.PayCreateManyInput[] = [];
+  for (const memberAmount of createExpenseInput.memberAmountList) {
+    const payee: Member | null = await prisma.member.findUnique({
+      where: {
+        name: memberAmount.name,
+      },
+    });
+
+    payInput.push({
+      amount: memberAmount.amount,
+      memberId: payee?.id!,
+      expenseId: expense.id,
+    });
+  }
+
+  await prisma.pay.createMany({
+    data: payInput,
+  });
+
+  const pays = await prisma.pay.findMany({
+    where: { expense: expense },
+    select: {
+      id: true,
+    },
+  });
+
+  await prisma.expense.update({
+    where: {
+      id: expense.id,
+    },
+    data: {
+      pays: {
+        connect: pays,
+      },
+    },
   });
 
   return Response.json("Expense created successfully.");
