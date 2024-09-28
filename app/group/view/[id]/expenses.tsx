@@ -1,6 +1,7 @@
 "use client";
 
-import { Expense } from "@prisma/client";
+import Expense from "@/app/components/expense";
+import { ExpenseWithPay } from "@/app/types";
 import { useEffect, useState } from "react";
 
 export type ExpensesProps = {
@@ -8,7 +9,7 @@ export type ExpensesProps = {
 };
 
 export default function Expenses({ groupId }: ExpensesProps) {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<ExpenseWithPay[]>([]);
 
   useEffect(() => {
     fetch(`/api/expense/get/group/${groupId}`)
@@ -20,13 +21,12 @@ export default function Expenses({ groupId }: ExpensesProps) {
   return (
     <div className="text-xl ml-6 space-y-10">
       {expenses.map((expense) => (
-        <div className="flex space-x-1" key={expense.id}>
-          <p>{expense.name}</p>
-          <p className="overflow-hidden opacity-50">
-            .........................................................................................................................................................
-          </p>
-          <p className="text-gold-light">₹{expense.amount}</p>
-        </div>
+        <Expense
+          key={expense.id}
+          name={expense.name}
+          amount={expense.amount}
+          payList={expense.pays}
+        />
       ))}
     </div>
   );

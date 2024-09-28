@@ -10,6 +10,13 @@ export async function GET(
     where: {
       groupId: Number(params.id),
     },
+    include: {
+      pays: {
+        include: {
+          payee: true,
+        },
+      },
+    },
   });
 
   return Response.json(expenses);

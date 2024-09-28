@@ -1,4 +1,4 @@
-import { Group, Member } from "@prisma/client";
+import { Expense, Group, Member, Pay } from "@prisma/client";
 
 export type GroupItem = Group & { members: Member[] };
 
@@ -12,4 +12,12 @@ export type CreateExpenseInput = {
 export type MemberAmount = {
   name: string;
   amount: number;
+};
+
+export type PayWithPayee = Pay & {
+  payee: Member;
+};
+
+export type ExpenseWithPay = Expense & {
+  pays: PayWithPayee[];
 };
