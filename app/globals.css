@@ -52,6 +52,15 @@ body {
   cursor: theme("cursor.pointer");
 }
 
+.loading-button {
+  background-color: theme("colors.custom-gray");
+  color: theme("colors.black");
+  padding: theme("padding.3") theme("padding.6");
+  border-radius: theme("borderRadius.xl");
+  font-weight: theme("fontWeight.black");
+  font-size: theme("fontSize.xs");
+}
+
 .input-field {
   background-color: theme("backgroundColor.transparent");
   border-width: theme("borderWidth.2");

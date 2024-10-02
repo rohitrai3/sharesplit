@@ -12,9 +12,16 @@ export default function Form() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [members, setMembers] = useState<Member[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [addButtonLabel, setAddButtonLabel] = useState<string>("Add");
+  const [addButtonStyle, setAddButtonStyle] =
+    useState<string>("primary-button");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true);
+    setAddButtonLabel("Adding...");
+    setAddButtonStyle("loading-button");
 
     const formData = new FormData(event.currentTarget);
     const memberAmountList: MemberAmount[] = [];
@@ -37,9 +44,9 @@ export default function Form() {
       headers: {
         "Contenct-Type": "application/json",
       },
-    });
-
-    router.push(`/group/view/${searchParams.get("groupId")}`);
+    })
+      .then((res) => router.push(`/group/view/${searchParams.get("groupId")}`))
+      .catch((err) => console.log("Error adding expense: ", err));
   }
 
   useEffect(() => {
@@ -83,7 +90,12 @@ export default function Form() {
         ))}
       </ul>
       <div className="flex justify-between">
-        <input className="primary-button" type="submit" value="Save" />
+        <input
+          className={addButtonStyle}
+          type="submit"
+          value={addButtonLabel}
+          disabled={isLoading}
+        />
         <Cancel />
       </div>
     </form>

@@ -1,5 +1,5 @@
 import { Member, Prisma, PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 
 const prisma = new PrismaClient();
@@ -35,5 +35,5 @@ export async function POST(request: NextRequest) {
     data: groupInput,
   });
 
-  return NextResponse.redirect(new URL("/home", request.url));
+  return Response.json("Group created successfully.");
 }
