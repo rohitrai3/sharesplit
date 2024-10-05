@@ -20,7 +20,7 @@ export default async function ViewGroup({
   return (
     <div className="w-dvh h-dvh flex flex-col p-6 space-y-10">
       <User />
-      <div className="flex-1 flex flex-col space-y-10">
+      <div className="flex-1 flex flex-col space-y-10 scroll-bar">
         <Group name={group.name} members={group.members} />
         <div className="text-sm text-gold-light ml-6">
           <p>You owe ₹70 to ino</p>

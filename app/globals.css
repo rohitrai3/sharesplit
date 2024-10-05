@@ -78,3 +78,9 @@ body {
   font-size: theme("fontSize.xs");
   width: theme("width.12");
 }
+
+.scroll-bar {
+  overflow-y: auto;
+  scrollbar-color: theme("colors.custom-gray") theme("colors.black");
+  scrollbar-width: thin;
+}

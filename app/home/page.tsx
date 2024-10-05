@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="w-dvh h-dvh flex flex-col p-6">
       <User />
-      <div className="flex-1 flex flex-col-reverse m-6 text-xl">
+      <div className="flex-1 flex flex-col-reverse m-6 text-xl overflow-auto scroll-bar">
         <Groups />
       </div>
       <div className="flex justify-between">
