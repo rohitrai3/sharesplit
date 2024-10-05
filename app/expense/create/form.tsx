@@ -6,12 +6,13 @@ import { Member } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import MemberAmountInput from "./memberAmountInput";
+import EqualSplitInput from "./equalSplitInput";
+import UnequalSplitInput from "./unequalSplitInput";
 
 export default function Form() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [members, setMembers] = useState<Member[]>([]);
+  const [memberList, setMemberList] = useState<Member[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [addButtonLabel, setAddButtonLabel] = useState<string>("Add");
   const [addButtonStyle, setAddButtonStyle] =
@@ -20,14 +21,12 @@ export default function Form() {
     SplitType.EQUAL
   );
   const [totalExpense, setTotalExpense] = useState<number>(0);
-  const [selectedMembersCount, setSelectedMembersCount] = useState<number>(0);
 
   useEffect(() => {
     fetch(`/api/group/get/${Number(searchParams.get("groupId"))}`)
       .then((res) => res.json())
       .then((data) => {
-        setMembers(data.members);
-        setSelectedMembersCount(data.members.length);
+        setMemberList(data.members);
       })
       .catch((err) => console.log("Error fetching group.", err));
   }, []);
@@ -40,14 +39,27 @@ export default function Form() {
 
     const formData = new FormData(event.currentTarget);
     const memberAmountList: MemberAmount[] = [];
-    members?.forEach((member) => {
-      if (formData.get(`${member.name}IsSelected`) === "on") {
-        memberAmountList.push({
-          name: member.name,
-          amount: Number(formData.get(`${member.name}Amount`)),
-        });
-      }
-    });
+
+    if (activeSplitType === SplitType.EQUAL) {
+      memberList?.forEach((member) => {
+        if (formData.get(`${member.name}IsSelected`) === "on") {
+          memberAmountList.push({
+            name: member.name,
+            amount: Number(formData.get(`${member.name}Amount`)),
+          });
+        }
+      });
+    } else {
+      memberList?.forEach((member) => {
+        if (Number(formData.get(`${member.name}Amount`)) !== 0) {
+          memberAmountList.push({
+            name: member.name,
+            amount: Number(formData.get(`${member.name}Amount`)),
+          });
+        }
+      });
+    }
+
     const createExpenseInput: CreateExpenseInput = {
       name: formData.get("name")?.toString()!,
       amount: Number(formData.get("amount")?.toString()!),
@@ -66,16 +78,23 @@ export default function Form() {
       .catch((err) => console.log("Error adding expense: ", err));
   }
 
-  function incrementSelectedMembersCount() {
-    setSelectedMembersCount(selectedMembersCount + 1);
-  }
-
-  function decrementSelectedMembersCount() {
-    setSelectedMembersCount(selectedMembersCount - 1);
-  }
-
-  function getEquallySplittedValue(): number {
-    return selectedMembersCount === 0 ? 0 : totalExpense / selectedMembersCount;
+  function getMemberAmountFormInput() {
+    switch (activeSplitType) {
+      case SplitType.EQUAL: {
+        return (
+          <EqualSplitInput
+            memberList={memberList}
+            totalExpense={totalExpense}
+          />
+        );
+      }
+      case SplitType.UNEQUAL: {
+        return <UnequalSplitInput memberList={memberList} />;
+      }
+      default: {
+        return <p>Split type does not exist</p>;
+      }
+    }
   }
 
   return (
@@ -116,23 +135,7 @@ export default function Form() {
           </p>
         ))}
       </div>
-      <div className="flex justify-between">
-        <label className="text-sm">Select members</label>
-        <label className="text-sm">Enter amount</label>
-      </div>
-      <ul className="space-y-5">
-        {members?.map((member) => (
-          <li key={member.id}>
-            <MemberAmountInput
-              name={member.name}
-              splitType={activeSplitType}
-              amount={getEquallySplittedValue()}
-              incrementSelectedMembersCount={incrementSelectedMembersCount}
-              decrementSelectedMembersCount={decrementSelectedMembersCount}
-            />
-          </li>
-        ))}
-      </ul>
+      {getMemberAmountFormInput()}
       <div className="flex justify-between">
         <input
           className={addButtonStyle}
