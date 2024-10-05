@@ -1,21 +1,36 @@
 "use client";
 
 import Cancel from "@/app/components/buttons/cancel";
-import { CreateExpenseInput, MemberAmount } from "@/app/types";
+import { CreateExpenseInput, MemberAmount, SplitType } from "@/app/types";
 import { Member } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import MemberInput from "./memberInput";
+import MemberAmountInput from "./memberAmountInput";
 
 export default function Form() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [members, setMembers] = useState<Member[]>();
+  const [members, setMembers] = useState<Member[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [addButtonLabel, setAddButtonLabel] = useState<string>("Add");
   const [addButtonStyle, setAddButtonStyle] =
     useState<string>("primary-button");
+  const [activeSplitType, setActiveSplitType] = useState<SplitType>(
+    SplitType.EQUAL
+  );
+  const [totalExpense, setTotalExpense] = useState<number>(0);
+  const [selectedMembersCount, setSelectedMembersCount] = useState<number>(0);
+
+  useEffect(() => {
+    fetch(`/api/group/get/${Number(searchParams.get("groupId"))}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setMembers(data.members);
+        setSelectedMembersCount(data.members.length);
+      })
+      .catch((err) => console.log("Error fetching group.", err));
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,10 +41,12 @@ export default function Form() {
     const formData = new FormData(event.currentTarget);
     const memberAmountList: MemberAmount[] = [];
     members?.forEach((member) => {
-      memberAmountList.push({
-        name: member.name,
-        amount: Number(formData.get(`${member.name}Amount`)),
-      });
+      if (formData.get(`${member.name}IsSelected`) === "on") {
+        memberAmountList.push({
+          name: member.name,
+          amount: Number(formData.get(`${member.name}Amount`)),
+        });
+      }
     });
     const createExpenseInput: CreateExpenseInput = {
       name: formData.get("name")?.toString()!,
@@ -49,12 +66,17 @@ export default function Form() {
       .catch((err) => console.log("Error adding expense: ", err));
   }
 
-  useEffect(() => {
-    fetch(`/api/group/get/${Number(searchParams.get("groupId"))}`)
-      .then((res) => res.json())
-      .then((data) => setMembers(data.members))
-      .catch((err) => console.log("Error fetching group.", err));
-  }, []);
+  function incrementSelectedMembersCount() {
+    setSelectedMembersCount(selectedMembersCount + 1);
+  }
+
+  function decrementSelectedMembersCount() {
+    setSelectedMembersCount(selectedMembersCount - 1);
+  }
+
+  function getEquallySplittedValue(): number {
+    return selectedMembersCount === 0 ? 0 : totalExpense / selectedMembersCount;
+  }
 
   return (
     <form className="w-96 space-y-5" onSubmit={onSubmit}>
@@ -76,7 +98,23 @@ export default function Form() {
           placeholder="90"
           name="amount"
           required
+          onChange={(e) => setTotalExpense(Number(e.target.value))}
         />
+      </div>
+      <div className="flex justify-around text-sm">
+        {Object.values(SplitType).map((value, index) => (
+          <p
+            key={index}
+            className={
+              value === activeSplitType
+                ? "cursor-pointer"
+                : "cursor-pointer opacity-50"
+            }
+            onClick={() => setActiveSplitType(value)}
+          >
+            {value}
+          </p>
+        ))}
       </div>
       <div className="flex justify-between">
         <label className="text-sm">Select members</label>
@@ -85,7 +123,13 @@ export default function Form() {
       <ul className="space-y-5">
         {members?.map((member) => (
           <li key={member.id}>
-            <MemberInput name={member.name} />
+            <MemberAmountInput
+              name={member.name}
+              splitType={activeSplitType}
+              amount={getEquallySplittedValue()}
+              incrementSelectedMembersCount={incrementSelectedMembersCount}
+              decrementSelectedMembersCount={decrementSelectedMembersCount}
+            />
           </li>
         ))}
       </ul>

@@ -21,3 +21,8 @@ export type PayWithPayee = Pay & {
 export type ExpenseWithPay = Expense & {
   pays: PayWithPayee[];
 };
+
+export enum SplitType {
+  EQUAL = "Equal",
+  UNEQUAL = "Unequal",
+}
