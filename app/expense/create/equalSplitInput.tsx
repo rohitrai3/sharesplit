@@ -77,9 +77,6 @@ export default function EqualSplitInput({
                 type="checkbox"
                 name={`${member.name}IsSelected`}
                 checked
-                onChange={(e) =>
-                  updateSelectedMembersCount(e, `${member.name}IsSelected`)
-                }
                 readOnly
               />
             ) : (
