@@ -17,6 +17,7 @@ const config: Config = {
         "gold-light": "#F5DF4D",
         "gold-dark": "#F0C05A",
         "custom-gray": "#939597",
+        "error-red": "#BF1932",
       },
     },
   },
