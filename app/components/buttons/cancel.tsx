@@ -8,6 +8,7 @@ export default function Cancel() {
   return (
     <button
       className="font-black text-xs px-6 py-3 opacity-50"
+      type="button"
       onClick={router.back}
     >
       Cancel
