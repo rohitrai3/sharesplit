@@ -4,6 +4,7 @@ import Group from "@/app/components/group";
 import Link from "next/link";
 import { GroupItem } from "@/app/types";
 import Expenses from "./expenses";
+import Owe from "./owe";
 
 export default async function ViewGroup({
   params,
@@ -22,10 +23,7 @@ export default async function ViewGroup({
       <User />
       <div className="flex-1 flex flex-col space-y-10 scroll-bar">
         <Group name={group.name} members={group.members} />
-        <div className="text-sm text-gold-light ml-6">
-          <p>You owe ₹70 to ino</p>
-          <p>choji owes ₹70 to you</p>
-        </div>
+        <Owe groupId={Number(params.id)} />
         <Expenses groupId={params.id} />
       </div>
       <div className="flex justify-between">
