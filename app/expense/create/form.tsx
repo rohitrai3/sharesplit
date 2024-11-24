@@ -104,9 +104,6 @@ export default function Form() {
     await fetch(`/api/expense/create`, {
       method: "POST",
       body: JSON.stringify(createExpenseInput),
-      headers: {
-        "Contenct-Type": "application/json",
-      },
     })
       .then((res) => router.push(`/group/view/${searchParams.get("groupId")}`))
       .catch((err) => console.log("Error adding expense: ", err));

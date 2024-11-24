@@ -1,9 +1,9 @@
-import { PayWithPayee } from "../types";
+import { PayWithPayor } from "../types";
 
 export type ExpenseProp = {
   name: string;
   amount: number;
-  payList: PayWithPayee[];
+  payList: PayWithPayor[];
 };
 
 export default function Expense({ name, amount, payList }: ExpenseProp) {
@@ -19,7 +19,7 @@ export default function Expense({ name, amount, payList }: ExpenseProp) {
       <div className="m-5 text-base">
         {payList.map((pay) => (
           <div key={pay.id} className="flex space-x-1">
-            <p>{pay.payee.name}</p>
+            <p>{pay.payor.name}</p>
             <p className="overflow-hidden opacity-50">
               ..................................................................................................................................................................................................................................................................................................................
             </p>

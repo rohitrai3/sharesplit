@@ -14,12 +14,12 @@ export type MemberAmount = {
   amount: number;
 };
 
-export type PayWithPayee = Pay & {
-  payee: Member;
+export type PayWithPayor = Pay & {
+  payor: Member;
 };
 
 export type ExpenseWithPay = Expense & {
-  pays: PayWithPayee[];
+  pays: PayWithPayor[];
 };
 
 export enum SplitType {

@@ -13,7 +13,7 @@ export async function GET(
     include: {
       pays: {
         include: {
-          payee: true,
+          payor: true,
         },
       },
     },

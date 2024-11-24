@@ -1,0 +1,16 @@
+-- CreateTable
+CREATE TABLE "Owe" (
+    "id" SERIAL NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "fromMemberId" INTEGER NOT NULL,
+    "toMemberId" INTEGER NOT NULL,
+
+    CONSTRAINT "Owe_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Owe" ADD CONSTRAINT "Owe_fromMemberId_fkey" FOREIGN KEY ("fromMemberId") REFERENCES "Member"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Owe" ADD CONSTRAINT "Owe_toMemberId_fkey" FOREIGN KEY ("toMemberId") REFERENCES "Member"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
