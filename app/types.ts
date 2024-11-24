@@ -14,6 +14,12 @@ export type CreateExpenseInput = {
   memberAmountList: MemberAmount[];
 };
 
+export type SettleExpenseInput = {
+  name: string;
+  amount: number;
+  groupId: number;
+};
+
 export type MemberAmount = {
   name: string;
   amount: number;

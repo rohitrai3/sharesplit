@@ -3,6 +3,7 @@
 import Loading from "@/app/components/loading";
 import { GetOweResponse } from "@/app/types";
 import { useEffect, useState } from "react";
+import Settle from "./settle";
 
 export type OweProps = {
   groupId: number;
@@ -33,7 +34,8 @@ export default function Owe({ groupId }: OweProps) {
       ))}
       {getOweResponse.oweToList.map((oweTo, index) => (
         <p key={index}>
-          You owe ₹{oweTo.amount} to {oweTo.name}
+          You owe ₹{oweTo.amount} to {oweTo.name}{" "}
+          <Settle groupId={groupId} name={oweTo.name} amount={oweTo.amount} />
         </p>
       ))}
     </div>
