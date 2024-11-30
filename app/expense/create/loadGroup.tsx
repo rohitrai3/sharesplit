@@ -24,7 +24,11 @@ export function LoadGroup() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Group name={group?.name!} members={group?.members!} />
+        <Group
+          id={Number(group?.id)}
+          name={group?.name!}
+          members={group?.members!}
+        />
       )}
     </>
   );

@@ -42,3 +42,7 @@ export type OweMemberAmount = {
   name: string;
   amount: number;
 };
+
+export type AddMemberRequest = {
+  nameList: string[];
+};

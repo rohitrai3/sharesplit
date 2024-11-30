@@ -1,31 +1,41 @@
 "use client";
 
-import User from "../../components/user";
-import Logout from "../../components/buttons/logout";
-import Cancel from "../../components/buttons/cancel";
-import { FormEvent, useState } from "react";
+import Cancel from "@/app/components/buttons/cancel";
+import Logout from "@/app/components/buttons/logout";
+import User from "@/app/components/user";
+import { AddMemberRequest } from "@/app/types";
 import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
-export default function CreateGroup() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [createButtonLabel, setCreateButtonLabel] = useState<string>("Create");
-  const [createButtonStyle, setCreateButtonStyle] =
-    useState<string>("primary-button");
+export default function AddMember({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [addButtonLabel, setAddButtonLabel] = useState<string>("Add member");
+  const [addButtonStyle, setAddButtonStyle] =
+    useState<string>("secondary-button");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsLoading(true);
-    setCreateButtonStyle("loading-button");
-    setCreateButtonLabel("Creating...");
+    setIsAdding(true);
+    setAddButtonStyle("loading-button");
+    setAddButtonLabel("Adding...");
 
     const formData = new FormData(event.currentTarget);
-    await fetch("/api/group/create", {
-      method: "POST",
-      body: formData,
+    const nameList: string[] = formData
+      .get("members")
+      ?.toString()
+      .split(",")
+      .map((name) => name.trim())!;
+    const addMemberRequest: AddMemberRequest = {
+      nameList: nameList,
+    };
+
+    await fetch(`/api/group/${params.id}/addMember`, {
+      method: "PATCH",
+      body: JSON.stringify(addMemberRequest),
     })
       .then((res) => {
-        router.push("/home");
+        router.push(`/group/view/${params.id}`);
       })
       .catch((err) => console.log("Error creating group: ", err));
   }
@@ -35,17 +45,6 @@ export default function CreateGroup() {
       <User />
       <div className="flex-1 flex flex-col justify-center items-center">
         <form className="space-y-10" onSubmit={onSubmit}>
-          <div className="space-y-0.5">
-            <label className="text-sm">Enter group name</label>
-            <br />
-            <input
-              className="input-field"
-              type="text"
-              placeholder="Ino-Shika-Cho"
-              name="name"
-              required
-            />
-          </div>
           <div className="space-y-0.5">
             <label className="text-sm">Enter members name</label>
             <br />
@@ -59,10 +58,10 @@ export default function CreateGroup() {
           <br />
           <div className="flex justify-between">
             <input
-              className={createButtonStyle}
+              className={addButtonStyle}
               type="submit"
-              value={createButtonLabel}
-              disabled={isLoading}
+              value={addButtonLabel}
+              disabled={isAdding}
             />
             <Cancel />
           </div>

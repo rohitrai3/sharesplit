@@ -22,7 +22,11 @@ export default async function ViewGroup({
     <div className="w-dvh h-dvh flex flex-col p-6 space-y-10">
       <User />
       <div className="flex-1 flex flex-col space-y-10 scroll-bar">
-        <Group name={group.name} members={group.members} />
+        <Group
+          id={Number(params.id)}
+          name={group.name}
+          members={group.members}
+        />
         <Owe groupId={Number(params.id)} />
         <Expenses groupId={params.id} />
       </div>
