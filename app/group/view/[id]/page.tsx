@@ -26,6 +26,7 @@ export default async function ViewGroup({
           id={Number(params.id)}
           name={group.name}
           members={group.members}
+          isAddMemberButtonVisible={true}
         />
         <Owe groupId={Number(params.id)} />
         <Expenses groupId={params.id} />

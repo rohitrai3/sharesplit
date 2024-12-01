@@ -35,7 +35,12 @@ export default function Groups() {
         groups.map((group: GroupItem) => (
           <div key={group.id}>
             <Link href={`/group/view/${group.id}`}>
-              <Group id={group.id} name={group.name} members={group.members} />
+              <Group
+                id={group.id}
+                name={group.name}
+                members={group.members}
+                isAddMemberButtonVisible={false}
+              />
             </Link>
           </div>
         ))

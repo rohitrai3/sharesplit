@@ -2,13 +2,15 @@
 
 import Cancel from "@/app/components/buttons/cancel";
 import Logout from "@/app/components/buttons/logout";
+import { LoadGroup } from "@/app/components/loadGroup";
 import User from "@/app/components/user";
 import { AddMemberRequest } from "@/app/types";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, Suspense, useState } from "react";
 
 export default function AddMember({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const id = Number(params.id);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [addButtonLabel, setAddButtonLabel] = useState<string>("Add member");
   const [addButtonStyle, setAddButtonStyle] =
@@ -30,19 +32,22 @@ export default function AddMember({ params }: { params: { id: string } }) {
       nameList: nameList,
     };
 
-    await fetch(`/api/group/${params.id}/addMember`, {
+    await fetch(`/api/group/${id}/addMember`, {
       method: "PATCH",
       body: JSON.stringify(addMemberRequest),
     })
       .then((res) => {
-        router.push(`/group/view/${params.id}`);
+        router.push(`/group/view/${id}`);
       })
       .catch((err) => console.log("Error creating group: ", err));
   }
 
   return (
-    <div className="w-dvh h-dvh flex flex-col p-6">
+    <div className="w-dvh h-dvh flex flex-col p-6 space-y-10">
       <User />
+      <Suspense>
+        <LoadGroup id={id} />
+      </Suspense>
       <div className="flex-1 flex flex-col justify-center items-center">
         <form className="space-y-10" onSubmit={onSubmit}>
           <div className="space-y-0.5">

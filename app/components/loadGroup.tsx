@@ -1,16 +1,18 @@
 import Group from "@/app/components/group";
 import Loading from "@/app/components/loading";
 import { GroupItem } from "@/app/types";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function LoadGroup() {
-  const searchParams = useSearchParams();
+export type LoadGroupProps = {
+  id: number;
+};
+
+export function LoadGroup({ id }: LoadGroupProps) {
   const [group, setGroup] = useState<GroupItem>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(`/api/group/get/${searchParams.get("groupId")}`)
+    fetch(`/api/group/get/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setGroup(data);
@@ -28,6 +30,7 @@ export function LoadGroup() {
           id={Number(group?.id)}
           name={group?.name!}
           members={group?.members!}
+          isAddMemberButtonVisible={false}
         />
       )}
     </>

@@ -4,9 +4,15 @@ export type GroupProps = {
   id: number;
   name: string;
   members: Member[];
+  isAddMemberButtonVisible: boolean;
 };
 
-export default function Group({ id, name, members }: GroupProps) {
+export default function Group({
+  id,
+  name,
+  members,
+  isAddMemberButtonVisible,
+}: GroupProps) {
   return (
     <div className="flex justify-between">
       <div>
@@ -17,11 +23,13 @@ export default function Group({ id, name, members }: GroupProps) {
           )}
         </p>
       </div>
-      <a href={`/group/${id}/addMember`}>
-        <button className="secondary-button" type="button">
-          Add member
-        </button>
-      </a>
+      {isAddMemberButtonVisible && (
+        <a href={`/group/${id}/addMember`}>
+          <button className="secondary-button" type="button">
+            Add member
+          </button>
+        </a>
+      )}
     </div>
   );
 }
