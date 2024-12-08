@@ -24,6 +24,7 @@ model Group {
   name      String
   members   Member[]
   expenses  Expense[]
+  Owe       Owe[]
   createdAt DateTime  @default(now())
 }
 
@@ -54,7 +55,9 @@ model Owe {
   amount       Float
   from         Member   @relation("OweTo", fields: [fromMemberId], references: [id])
   to           Member   @relation("OweFrom", fields: [toMemberId], references: [id])
+  group        Group    @relation(fields: [groupId], references: [id])
   createdAt    DateTime @default(now())
   fromMemberId Int
   toMemberId   Int
+  groupId      Int
 }

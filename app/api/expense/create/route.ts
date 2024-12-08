@@ -87,6 +87,9 @@ export async function POST(request: NextRequest) {
               connect: memberNameToMemberMap.get(memberAmountList[col].name),
             },
             amount: 0,
+            group: {
+              connect: group!,
+            },
           },
         });
         oweList.push(owe);

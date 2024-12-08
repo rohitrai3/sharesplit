@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   const oweFromList: OweMemberAmount[] = [];
   const oweToList: OweMemberAmount[] = [];
   const session = await getSession();
+  const groupId: number = Number(request.nextUrl.searchParams.get("groupId"));
 
   if (session && session.user) {
     const member: Member | null = await prisma.member.findUnique({
@@ -21,6 +22,7 @@ export async function GET(request: NextRequest) {
       const oweFromListResponse = await prisma.owe.findMany({
         where: {
           toMemberId: member.id,
+          groupId: groupId,
         },
         include: {
           from: true,

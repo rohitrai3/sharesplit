@@ -17,7 +17,7 @@ export default function Owe({ groupId }: OweProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(`/api/owe/get`)
+    fetch(`/api/owe/get?groupId=${groupId}`)
       .then((res) => res.json())
       .then((data) => setGetOweResponse(data))
       .then(() => setIsLoading(false))
