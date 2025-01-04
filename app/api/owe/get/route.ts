@@ -30,7 +30,11 @@ export async function GET(request: NextRequest) {
       });
       oweFromListResponse.forEach((oweFrom) => {
         if (oweFrom.amount) {
-          oweFromList.push({ name: oweFrom.from.name, amount: oweFrom.amount });
+          oweFromList.push({
+            id: oweFrom.id,
+            name: oweFrom.from.name,
+            amount: oweFrom.amount,
+          });
         }
       });
 
@@ -44,7 +48,11 @@ export async function GET(request: NextRequest) {
       });
       oweToListResponse.forEach((oweTo) => {
         if (oweTo.amount) {
-          oweToList.push({ name: oweTo.to.name, amount: oweTo.amount });
+          oweToList.push({
+            id: oweTo.id,
+            name: oweTo.to.name,
+            amount: oweTo.amount,
+          });
         }
       });
     }

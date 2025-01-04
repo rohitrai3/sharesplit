@@ -15,9 +15,16 @@ export type CreateExpenseInput = {
 };
 
 export type SettleExpenseInput = {
-  name: string;
+  id: number;
+  payee: string;
   amount: number;
   groupId: number;
+};
+
+export type SettleExpenseData = {
+  id: number;
+  payee: string;
+  amount: number;
 };
 
 export type MemberAmount = {
@@ -39,6 +46,7 @@ export type GetOweResponse = {
 };
 
 export type OweMemberAmount = {
+  id: number;
   name: string;
   amount: number;
 };
