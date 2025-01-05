@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
       const oweToListResponse = await prisma.owe.findMany({
         where: {
           fromMemberId: member.id,
+          groupId: groupId,
         },
         include: {
           to: true,
