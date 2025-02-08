@@ -8,12 +8,12 @@ export async function GET(request: NextRequest) {
   const session = await getSession();
   const user = session?.user;
   const name = user?.name;
-  const member = await prisma.member.findUnique({
+  const member = await prisma.user.findUnique({
     where: {
       name: name,
     },
     include: {
-      groups: {
+      memberOf: {
         include: {
           members: true,
         },
@@ -21,5 +21,5 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  return Response.json(member?.groups);
+  return Response.json(member?.memberOf);
 }

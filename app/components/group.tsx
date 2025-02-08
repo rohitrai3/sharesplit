@@ -1,9 +1,9 @@
-import { Member } from "@prisma/client";
+import { User } from "@prisma/client";
 
 export type GroupProps = {
   id: number;
   name: string;
-  members: Member[];
+  members: User[];
   isAddMemberButtonVisible: boolean;
 };
 

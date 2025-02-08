@@ -1,6 +1,6 @@
 import { CreateExpenseInput, MemberAmount } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
-import { Group, Member, Owe, Prisma, PrismaClient } from "@prisma/client";
+import { Group, User, Owe, Prisma, PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   const createExpenseInput: CreateExpenseInput = await request.json();
   const session = await getSession();
-  const payor: Member | null = await prisma.member.findUnique({
+  const payor: User | null = await prisma.user.findUnique({
     where: {
       name: session?.user?.name,
     },
@@ -34,14 +34,14 @@ export async function POST(request: NextRequest) {
   const memberIndexMap: Map<string, number> = new Map();
   const memberOweGraph: number[][] = new Array(length);
   const memberAmountMap: Map<string, number> = new Map();
-  const memberNameToMemberMap: Map<string, Member> = new Map();
+  const memberNameToMemberMap: Map<string, User> = new Map();
   const oweList: Owe[] = [];
 
   // Populate memberIndexMap and memberAmountMap
   for (let index = 0; index < length; index++) {
     const name: string = memberAmountList[index].name;
     const amount: number = memberAmountList[index].amount;
-    const member: Member | null = await prisma.member.findUnique({
+    const member: User | null = await prisma.user.findUnique({
       where: {
         name: name,
       },
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
 
   const payInput: Prisma.PayCreateManyInput[] = [];
   for (const memberAmount of createExpenseInput.memberAmountList) {
-    const payee: Member | null = await prisma.member.findUnique({
+    const payee: User | null = await prisma.user.findUnique({
       where: {
         name: memberAmount.name,
       },

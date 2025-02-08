@@ -2,7 +2,7 @@
 
 import Cancel from "@/app/components/buttons/cancel";
 import { CreateExpenseInput, MemberAmount, SplitType } from "@/app/types";
-import { Member } from "@prisma/client";
+import { User } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import Error from "@/app/components/error";
 export default function Form() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [memberList, setMemberList] = useState<Member[]>([]);
+  const [memberList, setMemberList] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [addButtonLabel, setAddButtonLabel] = useState<string>("Add");
   const [addButtonStyle, setAddButtonStyle] =

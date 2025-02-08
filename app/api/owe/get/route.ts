@@ -1,6 +1,6 @@
 import { GetOweResponse, OweMemberAmount } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
-import { Member, PrismaClient } from "@prisma/client";
+import { User, PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const groupId: number = Number(request.nextUrl.searchParams.get("groupId"));
 
   if (session && session.user) {
-    const member: Member | null = await prisma.member.findUnique({
+    const member: User | null = await prisma.user.findUnique({
       where: {
         name: session.user.name,
       },

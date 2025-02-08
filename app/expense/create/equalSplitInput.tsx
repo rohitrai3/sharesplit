@@ -1,8 +1,8 @@
-import { Member } from "@prisma/client";
+import { User } from "@prisma/client";
 import { ChangeEvent, useEffect, useState } from "react";
 
 export type EqualSplitInputProps = {
-  memberList: Member[];
+  memberList: User[];
   totalExpense: number;
 };
 

@@ -1,6 +1,6 @@
 import { SettleExpenseInput } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
-import { Group, Member, Owe, Pay, Prisma, PrismaClient } from "@prisma/client";
+import { Group, User, Owe, Pay, Prisma, PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
@@ -8,12 +8,12 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   const settleExpenseInput: SettleExpenseInput = await request.json();
   const session = await getSession();
-  const payor: Member | null = await prisma.member.findUnique({
+  const payor: User | null = await prisma.user.findUnique({
     where: {
       name: session?.user?.name,
     },
   });
-  const payee: Member | null = await prisma.member.findUnique({
+  const payee: User | null = await prisma.user.findUnique({
     where: {
       name: settleExpenseInput.payee,
     },

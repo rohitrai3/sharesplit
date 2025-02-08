@@ -1,4 +1,4 @@
-import { Member, Prisma, PrismaClient } from "@prisma/client";
+import { User, Prisma, PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 
@@ -7,16 +7,21 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const session = await getSession();
-  const creator: string = session?.user?.name;
+  const user: string = session?.user?.name;
+  const admin: User | null = await prisma.user.findUnique({
+    where: {
+      name: user,
+    },
+  });
   const name: string = formData.get("name")?.toString()!;
   const membersName: string[] = formData.get("members")?.toString().split(",")!;
-  const members: Member[] = [];
+  const members: User[] = [];
 
   membersName.forEach((name, index) => (membersName[index] = name.trim()));
-  membersName.push(creator);
+  membersName.push(user);
 
   for (const name of membersName) {
-    const member: Member | null = await prisma.member.findUnique({
+    const member: User | null = await prisma.user.findUnique({
       where: {
         name: name,
       },
@@ -27,6 +32,9 @@ export async function POST(request: NextRequest) {
     name: name,
     members: {
       connect: members,
+    },
+    admin: {
+      connect: admin!,
     },
   };
   await prisma.group.create({

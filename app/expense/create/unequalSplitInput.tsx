@@ -1,7 +1,7 @@
-import { Member } from "@prisma/client";
+import { User } from "@prisma/client";
 
 export type UnequalSplitInputProps = {
-  memberList: Member[];
+  memberList: User[];
 };
 
 export default function UnequalSplitInput({

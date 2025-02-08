@@ -1,5 +1,5 @@
 import { AddMemberRequest } from "@/app/types";
-import { Member, PrismaClient } from "@prisma/client";
+import { User, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +12,7 @@ export async function PATCH(
   const nameList = addMemberRequest.nameList;
 
   for (let i = 0; i < nameList.length; i++) {
-    const member: Member | null = await prisma.member.findUnique({
+    const member: User | null = await prisma.user.findUnique({
       where: {
         name: nameList[i],
       },

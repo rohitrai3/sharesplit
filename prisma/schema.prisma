@@ -8,12 +8,13 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model Member {
+model User {
   id        Int       @id @default(autoincrement())
   name      String    @unique
-  groups    Group[]
   expenses  Expense[]
   createdAt DateTime  @default(now())
+  memberOf  Group[]   @relation("UserIsMemberOfGroups")
+  amdinOf   Group[]   @relation("UserIsAdminOfGroup")
   pays      Pay[]
   oweFrom   Owe[]     @relation("OweFrom")
   oweTo     Owe[]     @relation("OweTo")
@@ -22,17 +23,19 @@ model Member {
 model Group {
   id        Int       @id @default(autoincrement())
   name      String
-  members   Member[]
   expenses  Expense[]
   Owe       Owe[]
   createdAt DateTime  @default(now())
+  members   User[]    @relation("UserIsMemberOfGroups")
+  admin     User      @relation("UserIsAdminOfGroup", fields: [userId], references: [id])
+  userId    Int
 }
 
 model Expense {
   id        Int      @id @default(autoincrement())
   name      String
   amount    Float
-  member    Member   @relation(fields: [memberId], references: [id])
+  member    User     @relation(fields: [memberId], references: [id])
   group     Group    @relation(fields: [groupId], references: [id])
   groupId   Int
   createdAt DateTime @default(now())
@@ -43,7 +46,7 @@ model Expense {
 model Pay {
   id        Int      @id @default(autoincrement())
   amount    Float
-  payor     Member   @relation(fields: [memberId], references: [id])
+  payor     User     @relation(fields: [memberId], references: [id])
   expense   Expense  @relation(fields: [expenseId], references: [id])
   createdAt DateTime @default(now())
   expenseId Int
@@ -53,8 +56,8 @@ model Pay {
 model Owe {
   id           Int      @id @default(autoincrement())
   amount       Float
-  from         Member   @relation("OweTo", fields: [fromMemberId], references: [id])
-  to           Member   @relation("OweFrom", fields: [toMemberId], references: [id])
+  from         User     @relation("OweTo", fields: [fromMemberId], references: [id])
+  to           User     @relation("OweFrom", fields: [toMemberId], references: [id])
   group        Group    @relation(fields: [groupId], references: [id])
   createdAt    DateTime @default(now())
   fromMemberId Int
