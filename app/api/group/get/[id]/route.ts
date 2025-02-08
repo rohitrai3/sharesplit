@@ -1,4 +1,5 @@
-import { Group, PrismaClient } from "@prisma/client";
+import { GroupItem } from "@/app/types";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -10,14 +11,22 @@ export async function GET(
     params: { id: string };
   }
 ) {
-  const group: Group | null = await prisma.group.findUnique({
+  const group = await prisma.group.findUnique({
     where: {
       id: Number(params.id),
     },
     include: {
       members: true,
+      admin: true,
     },
   });
 
-  return Response.json(group);
+  const response: GroupItem = {
+    id: group?.id!,
+    name: group?.name!,
+    members: group?.members!,
+    admin: group?.admin!,
+  };
+
+  return Response.json(response);
 }

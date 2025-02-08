@@ -1,11 +1,9 @@
-import { Expense, Group, User, Pay } from "@prisma/client";
+import { Expense, User, Pay } from "@prisma/client";
 
 export enum SplitType {
   EQUAL = "Equal",
   UNEQUAL = "Unequal",
 }
-
-export type GroupItem = Group & { members: User[] };
 
 export type CreateExpenseInput = {
   name: string;
@@ -53,4 +51,11 @@ export type OweMemberAmount = {
 
 export type AddMemberRequest = {
   nameList: string[];
+};
+
+export type GroupItem = {
+  id: number;
+  name: string;
+  members: User[];
+  admin: User;
 };

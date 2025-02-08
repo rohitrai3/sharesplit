@@ -1,3 +1,4 @@
+import { GroupItem } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
@@ -16,10 +17,23 @@ export async function GET(request: NextRequest) {
       memberOf: {
         include: {
           members: true,
+          admin: true,
         },
       },
     },
   });
 
-  return Response.json(member?.memberOf);
+  const response: GroupItem[] = [];
+  member?.memberOf.forEach((item) => {
+    const group: GroupItem = {
+      id: item.id,
+      name: item.name,
+      members: item.members,
+      admin: item.admin
+    }
+
+    response.push(group);
+  })
+
+  return Response.json(response);
 }

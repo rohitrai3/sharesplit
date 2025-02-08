@@ -30,6 +30,7 @@ export function LoadGroup({ id }: LoadGroupProps) {
           id={Number(group?.id)}
           name={group?.name!}
           members={group?.members!}
+          admin={group?.admin!}
           isAddMemberButtonVisible={false}
         />
       )}

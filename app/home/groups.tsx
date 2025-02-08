@@ -9,7 +9,7 @@ import Loading from "../components/loading";
 
 export default function Groups() {
   const { user } = useUser();
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState<GroupItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -32,13 +32,14 @@ export default function Groups() {
       {isLoading ? (
         <Loading />
       ) : (
-        groups.map((group: GroupItem) => (
+        groups.map((group) => (
           <div key={group.id}>
             <Link href={`/group/view/${group.id}`}>
               <Group
                 id={group.id}
                 name={group.name}
                 members={group.members}
+                admin={group.admin}
                 isAddMemberButtonVisible={false}
               />
             </Link>
