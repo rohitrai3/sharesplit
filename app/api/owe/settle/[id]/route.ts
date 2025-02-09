@@ -1,6 +1,12 @@
 import { SettleExpenseInput } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
-import { Group, User, Owe, Transaction, Prisma, PrismaClient } from "@prisma/client";
+import {
+  Group,
+  User,
+  Owe,
+  Prisma,
+  PrismaClient,
+} from "@prisma/client";
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
@@ -23,17 +29,9 @@ export async function POST(request: NextRequest) {
       id: settleExpenseInput.id,
     },
   });
+  const remainingAmount: number = owe?.amount! - settleExpenseInput.amount;
 
-  await prisma.owe.updateMany({
-    where: {
-      from: payor!,
-      to: payee!,
-    },
-    data: {
-      amount: owe?.amount! - settleExpenseInput.amount,
-    },
-  });
-
+  // Create expense for settlement
   const group: Group | null = await prisma.group.findUnique({
     where: {
       id: settleExpenseInput.groupId,
@@ -53,19 +51,56 @@ export async function POST(request: NextRequest) {
     data: expenseCreateinput,
   });
 
-  const payCreateInput: Prisma.TransactionCreateInput = {
+  // Craete transaction for settlement
+  const transactionCreateManyInput: Prisma.TransactionCreateManyInput[] = [];
+  transactionCreateManyInput.push({
     amount: settleExpenseInput.amount,
     isPayor: true,
-    user: {
-      connect: payor!,
-    },
-    expense: {
-      connect: expense,
-    },
-  };
+    userId: payor?.id!,
+    expenseId: expense.id,
+  });
 
-  const pay: Transaction | null = await prisma.transaction.create({
-    data: payCreateInput,
+  if (remainingAmount < 0) {
+    await prisma.owe.updateMany({
+      where: {
+        from: payor!,
+        to: payee!,
+      },
+      data: {
+        amount: 0,
+      },
+    });
+
+    await prisma.owe.updateMany({
+      where: {
+        from: payee!,
+        to: payor!,
+      },
+      data: {
+        amount: Math.abs(remainingAmount),
+      },
+    });
+
+    transactionCreateManyInput.push({
+      amount: Math.abs(remainingAmount),
+      isPayor: false,
+      userId: payee?.id!,
+      expenseId: expense.id,
+    });
+  } else {
+    await prisma.owe.updateMany({
+      where: {
+        from: payor!,
+        to: payee!,
+      },
+      data: {
+        amount: remainingAmount,
+      },
+    });
+  }
+
+  const transactions = await prisma.transaction.createManyAndReturn({
+    data: transactionCreateManyInput,
   });
 
   await prisma.expense.update({
@@ -74,7 +109,7 @@ export async function POST(request: NextRequest) {
     },
     data: {
       transactions: {
-        connect: pay!,
+        connect: transactions,
       },
     },
   });
