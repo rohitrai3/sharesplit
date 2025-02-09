@@ -30,7 +30,9 @@ export default async function ViewGroup({
           isAddMemberButtonVisible={true}
         />
         <Owe groupId={Number(params.id)} />
-        <Expenses groupId={params.id} />
+        <div className="flex-1 flex flex-col-reverse m-6 text-xl overflow-auto scroll-bar">
+          <Expenses groupId={params.id} />
+        </div>
       </div>
       <div className="flex justify-between">
         <Link
