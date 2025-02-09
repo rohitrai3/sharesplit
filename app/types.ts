@@ -1,4 +1,4 @@
-import { Expense, User, Pay } from "@prisma/client";
+import { Expense, User, Transaction } from "@prisma/client";
 
 export enum SplitType {
   EQUAL = "Equal",
@@ -30,12 +30,18 @@ export type MemberAmount = {
   amount: number;
 };
 
-export type PayWithPayor = Pay & {
-  payor: User;
+export type TransactionItem = {
+  id: number;
+  amount: number;
+  isPayor: boolean;
+  user: User;
 };
 
-export type ExpenseWithPay = Expense & {
-  pays: PayWithPayor[];
+export type ExpenseItem = {
+  id: number,
+  name: string,
+  amount: number,
+  transactions: TransactionItem[]
 };
 
 export type GetOweResponse = {

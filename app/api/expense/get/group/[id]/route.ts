@@ -11,9 +11,9 @@ export async function GET(
       groupId: Number(params.id),
     },
     include: {
-      pays: {
+      transactions: {
         include: {
-          payor: true,
+          user: true,
         },
       },
     },

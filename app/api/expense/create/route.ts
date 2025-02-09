@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   const expenseInput: Prisma.ExpenseCreateInput = {
     name: createExpenseInput.name,
     amount: createExpenseInput.amount,
-    member: {
+    admin: {
       connect: payor!,
     },
     group: {
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
     data: expenseInput,
   });
 
-  const payInput: Prisma.PayCreateManyInput[] = [];
+  const payInput: Prisma.TransactionCreateManyInput[] = [];
   for (const memberAmount of createExpenseInput.memberAmountList) {
     const payee: User | null = await prisma.user.findUnique({
       where: {
@@ -159,16 +159,17 @@ export async function POST(request: NextRequest) {
 
     payInput.push({
       amount: memberAmount.amount,
-      memberId: payee?.id!,
+      isPayor: payee?.id === payor?.id,
+      userId: payee?.id!,
       expenseId: expense.id,
     });
   }
 
-  await prisma.pay.createMany({
+  await prisma.transaction.createMany({
     data: payInput,
   });
 
-  const pays = await prisma.pay.findMany({
+  const pays = await prisma.transaction.findMany({
     where: { expense: expense },
     select: {
       id: true,
@@ -180,7 +181,7 @@ export async function POST(request: NextRequest) {
       id: expense.id,
     },
     data: {
-      pays: {
+      transactions: {
         connect: pays,
       },
     },

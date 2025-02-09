@@ -9,48 +9,49 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  expenses  Expense[]
-  createdAt DateTime  @default(now())
-  memberOf  Group[]   @relation("UserIsMemberOfGroups")
-  amdinOf   Group[]   @relation("UserIsAdminOfGroup")
-  pays      Pay[]
-  oweFrom   Owe[]     @relation("OweFrom")
-  oweTo     Owe[]     @relation("OweTo")
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  createdAt    DateTime      @default(now())
+  memberOf     Group[]       @relation("UserIsMemberOfGroups")
+  amdinOf      Group[]       @relation("UserIsAdminOfGroup")
+  transactions Transaction[] @relation("TransactionsByUser")
+  expenses     Expense[]     @relation("ExpensesByUser")
+  oweFrom      Owe[]         @relation("OweFrom")
+  oweTo        Owe[]         @relation("OweTo")
 }
 
 model Group {
   id        Int       @id @default(autoincrement())
   name      String
-  expenses  Expense[]
-  Owe       Owe[]
   createdAt DateTime  @default(now())
   members   User[]    @relation("UserIsMemberOfGroups")
-  admin     User      @relation("UserIsAdminOfGroup", fields: [userId], references: [id])
-  userId    Int
+  admin     User      @relation("UserIsAdminOfGroup", fields: [adminId], references: [id])
+  adminId    Int
+  expenses  Expense[] @relation("ExpensesInGroup")
+  Owe       Owe[]
 }
 
 model Expense {
-  id        Int      @id @default(autoincrement())
-  name      String
-  amount    Float
-  member    User     @relation(fields: [memberId], references: [id])
-  group     Group    @relation(fields: [groupId], references: [id])
-  groupId   Int
-  createdAt DateTime @default(now())
-  pays      Pay[]
-  memberId  Int
+  id           Int           @id @default(autoincrement())
+  name         String
+  amount       Float
+  createdAt    DateTime      @default(now())
+  transactions Transaction[] @relation("TransactionsInExpense")
+  group        Group         @relation("ExpensesInGroup", fields: [groupId], references: [id])
+  groupId      Int
+  admin        User          @relation("ExpensesByUser", fields: [userId], references: [id])
+  userId       Int
 }
 
-model Pay {
+model Transaction {
   id        Int      @id @default(autoincrement())
   amount    Float
-  payor     User     @relation(fields: [memberId], references: [id])
-  expense   Expense  @relation(fields: [expenseId], references: [id])
+  isPayor Boolean
   createdAt DateTime @default(now())
+  user     User     @relation("TransactionsByUser", fields: [userId], references: [id])
+  userId    Int
+  expense   Expense  @relation("TransactionsInExpense", fields: [expenseId], references: [id])
   expenseId Int
-  memberId  Int
 }
 
 model Owe {

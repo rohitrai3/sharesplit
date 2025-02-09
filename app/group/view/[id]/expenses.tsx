@@ -2,7 +2,7 @@
 
 import Expense from "@/app/components/expense";
 import Loading from "@/app/components/loading";
-import { ExpenseWithPay } from "@/app/types";
+import { ExpenseItem } from "@/app/types";
 import { useEffect, useState } from "react";
 
 export type ExpensesProps = {
@@ -10,7 +10,7 @@ export type ExpensesProps = {
 };
 
 export default function Expenses({ groupId }: ExpensesProps) {
-  const [expenses, setExpenses] = useState<ExpenseWithPay[]>([]);
+  const [expenses, setExpenses] = useState<ExpenseItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Expenses({ groupId }: ExpensesProps) {
             key={expense.id}
             name={expense.name}
             amount={expense.amount}
-            payList={expense.pays}
+            transactions={expense.transactions}
           />
         ))
       )}

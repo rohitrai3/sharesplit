@@ -1,6 +1,6 @@
 import { SettleExpenseInput } from "@/app/types";
 import { getSession } from "@auth0/nextjs-auth0";
-import { Group, User, Owe, Pay, Prisma, PrismaClient } from "@prisma/client";
+import { Group, User, Owe, Transaction, Prisma, PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
   const expenseCreateinput: Prisma.ExpenseCreateInput = {
     name: `${payor?.name} settled up with ${payee?.name}`,
     amount: settleExpenseInput.amount,
-    member: {
+    admin: {
       connect: payor!,
     },
     group: {
@@ -53,17 +53,18 @@ export async function POST(request: NextRequest) {
     data: expenseCreateinput,
   });
 
-  const payCreateInput: Prisma.PayCreateInput = {
-    payor: {
+  const payCreateInput: Prisma.TransactionCreateInput = {
+    amount: settleExpenseInput.amount,
+    isPayor: true,
+    user: {
       connect: payor!,
     },
-    amount: settleExpenseInput.amount,
     expense: {
       connect: expense,
     },
   };
 
-  const pay: Pay | null = await prisma.pay.create({
+  const pay: Transaction | null = await prisma.transaction.create({
     data: payCreateInput,
   });
 
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
       id: expense.id,
     },
     data: {
-      pays: {
+      transactions: {
         connect: pay!,
       },
     },
