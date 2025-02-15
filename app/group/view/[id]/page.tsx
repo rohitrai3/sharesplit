@@ -5,6 +5,7 @@ import Link from "next/link";
 import { GroupItem } from "@/app/types";
 import Expenses from "./expenses";
 import Owe from "./owe";
+import Back from "@/app/components/buttons/back";
 
 export default async function ViewGroup({
   params,
@@ -35,6 +36,7 @@ export default async function ViewGroup({
         </div>
       </div>
       <div className="flex justify-between">
+        <Back />
         <Link
           href={{ pathname: "/expense/create", query: { groupId: params.id } }}
         >
