@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   });
   const expenseInput: Prisma.ExpenseCreateInput = {
     name: createExpenseInput.name,
-    amount: createExpenseInput.amount,
+    amount: parseFloat(createExpenseInput.amount.toFixed(2)),
     admin: {
       connect: payor!,
     },
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
             toMemberId: memberNameToMemberMap.get(toMember)?.id!,
           },
           data: {
-            amount: amount,
+            amount: parseFloat(amount.toFixed(2))
           },
         });
       }
@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
     });
 
     payInput.push({
-      amount: memberAmount.amount,
+      amount: parseFloat(memberAmount.amount.toFixed(2)),
       isPayor: payee?.id === payor?.id,
       userId: payee?.id!,
       expenseId: expense.id,
