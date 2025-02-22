@@ -17,3 +17,9 @@ test("has logo text", async ({ page }) => {
 
   await expect(page.getByAltText("ShareSplit text")).toBeVisible();
 })
+
+test("has tag line", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+
+  await expect(page.getByRole("heading", { name: "Split your shares with your friends"})).toBeVisible();
+})
