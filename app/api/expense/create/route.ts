@@ -8,9 +8,14 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   const createExpenseInput: CreateExpenseInput = await request.json();
   const session = await getSession();
-  const payor: User | null = await prisma.user.findUnique({
+  const user: User | null = await prisma.user.findUnique({
     where: {
       name: session?.user?.name,
+    },
+  });
+  const payor: User | null = await prisma.user.findUnique({
+    where: {
+      name: createExpenseInput.payor,
     },
   });
   const group: Group | null = await prisma.group.findUnique({
@@ -18,17 +23,49 @@ export async function POST(request: NextRequest) {
       id: createExpenseInput.groudId,
     },
   });
-  const expenseInput: Prisma.ExpenseCreateInput = {
+  
+  // Create Expense
+  const expenseCreateInput: Prisma.ExpenseCreateInput = {
     name: createExpenseInput.name,
     amount: parseFloat(createExpenseInput.amount.toFixed(2)),
-    admin: {
-      connect: payor!,
-    },
     group: {
       connect: group!,
     },
+    createdBy: {
+      connect: user!,
+    },
+    payor: {
+      connect: payor!,
+    },
   };
 
+  const expense = await prisma.expense.create({
+    data: expenseCreateInput,
+  });
+
+  // Create Transaction
+  const transactionCreateManyInput: Prisma.TransactionCreateManyInput[] = [];
+
+  for (const memberAmount of createExpenseInput.memberAmountList) {
+    const payee: User | null = await prisma.user.findUnique({
+      where: {
+        name: memberAmount.name,
+      },
+    });
+
+    transactionCreateManyInput.push({
+      amount: parseFloat(memberAmount.amount.toFixed(2)),
+      isPayor: payee?.id === payor?.id,
+      userId: payee?.id!,
+      expenseId: expense.id,
+    });
+  }
+
+  await prisma.transaction.createMany({
+    data: transactionCreateManyInput,
+  });
+
+  // Create Owe
   const memberAmountList: MemberAmount[] = createExpenseInput.memberAmountList;
   const length: number = memberAmountList.length;
   const memberIndexMap: Map<string, number> = new Map();
@@ -138,36 +175,12 @@ export async function POST(request: NextRequest) {
             toMemberId: memberNameToMemberMap.get(toMember)?.id!,
           },
           data: {
-            amount: parseFloat(amount.toFixed(2))
+            amount: parseFloat(amount.toFixed(2)),
           },
         });
       }
     }
   }
-
-  const expense = await prisma.expense.create({
-    data: expenseInput,
-  });
-
-  const payInput: Prisma.TransactionCreateManyInput[] = [];
-  for (const memberAmount of createExpenseInput.memberAmountList) {
-    const payee: User | null = await prisma.user.findUnique({
-      where: {
-        name: memberAmount.name,
-      },
-    });
-
-    payInput.push({
-      amount: parseFloat(memberAmount.amount.toFixed(2)),
-      isPayor: payee?.id === payor?.id,
-      userId: payee?.id!,
-      expenseId: expense.id,
-    });
-  }
-
-  await prisma.transaction.createMany({
-    data: payInput,
-  });
 
   const pays = await prisma.transaction.findMany({
     where: { expense: expense },

@@ -1,4 +1,4 @@
-import { Expense, User, Transaction } from "@prisma/client";
+import { User } from "@prisma/client";
 
 export enum SplitType {
   EQUAL = "Equal",
@@ -8,6 +8,7 @@ export enum SplitType {
 export type CreateExpenseInput = {
   name: string;
   amount: number;
+  payor: string;
   groudId: number;
   memberAmountList: MemberAmount[];
 };
@@ -16,6 +17,7 @@ export type SettleExpenseInput = {
   id: number;
   payee: string;
   amount: number;
+  payor: string;
   groupId: number;
 };
 

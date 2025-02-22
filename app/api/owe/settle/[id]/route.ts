@@ -14,11 +14,16 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   const settleExpenseInput: SettleExpenseInput = await request.json();
   const session = await getSession();
-  const payor: User | null = await prisma.user.findUnique({
+  const user: User | null = await prisma.user.findUnique({
     where: {
       name: session?.user?.name,
     },
   });
+  const payor: User | null = await prisma.user.findUnique({
+    where: {
+      name: settleExpenseInput.payor
+    }
+  })
   const payee: User | null = await prisma.user.findUnique({
     where: {
       name: settleExpenseInput.payee,
@@ -40,12 +45,15 @@ export async function POST(request: NextRequest) {
   const expenseCreateinput: Prisma.ExpenseCreateInput = {
     name: `${payor?.name} settled up with ${payee?.name}`,
     amount: settleExpenseInput.amount,
-    admin: {
-      connect: payor!,
-    },
     group: {
       connect: group!,
     },
+    createdBy: {
+      connect: user!,
+    },
+    payor: {
+      connect: payor!
+    }
   };
   const expense = await prisma.expense.create({
     data: expenseCreateinput,

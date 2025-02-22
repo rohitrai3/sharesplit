@@ -97,6 +97,7 @@ export default function Form() {
     const createExpenseInput: CreateExpenseInput = {
       name: formData.get("name")?.toString()!,
       amount: Number(formData.get("amount")?.toString()!),
+      payor: formData.get("payor")?.toString()!,
       groudId: Number(searchParams.get("groupId")),
       memberAmountList: memberAmountList,
     };
@@ -150,6 +151,16 @@ export default function Form() {
             name="amount"
             required
             onChange={(e) => setTotalExpense(Number(e.target.value))}
+          />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm">Enter payor name</label>
+          <input
+            className="input-field"
+            type="text"
+            placeholder="johndoe"
+            name="payor"
+            required
           />
         </div>
         <div className="flex justify-around text-sm">

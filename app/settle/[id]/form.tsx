@@ -24,10 +24,12 @@ export default function Form({ id, payee }: FormProps) {
 
     const formData = new FormData(event.currentTarget);
     const amount = Number(formData.get("amount"));
+    const payor: string = formData.get("payor")?.toString()!;
     const settleExpenseInput: SettleExpenseInput = {
       id: id,
       payee: payee,
       amount: amount,
+      payor: payor,
       groupId: Number(searchParams.get("groupId")),
     };
 
@@ -61,6 +63,16 @@ export default function Form({ id, payee }: FormProps) {
             type="text"
             placeholder="1234"
             name="amount"
+            required
+          />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm">Enter payor name</label>
+          <input
+            className="input-field"
+            type="text"
+            placeholder="johndoe"
+            name="payor"
             required
           />
         </div>
