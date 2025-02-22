@@ -1,13 +1,13 @@
-"use client";
+import Link from "next/link";
 
-import { useRouter } from "next/navigation";
+export type BackProps = {
+  page: string;
+};
 
-export default function Back() {
-  const router = useRouter();
-
+export default function Back({ page }: BackProps) {
   return (
-    <div className="secondary-button" onClick={() => router.back()}>
-      Back
-    </div>
+    <Link href={`/${page}`}>
+      <button className="secondary-button">Back</button>
+    </Link>
   );
 }

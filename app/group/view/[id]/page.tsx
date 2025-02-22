@@ -36,7 +36,7 @@ export default async function ViewGroup({
         </div>
       </div>
       <div className="flex justify-between">
-        <Back />
+        <Back page="home" />
         <Link
           href={{ pathname: "/expense/create", query: { groupId: params.id } }}
         >
