@@ -2,6 +2,7 @@
 
 import Cancel from "@/app/components/buttons/cancel";
 import Error from "@/app/components/error";
+import { MAX_AMOUNT } from "@/app/constants";
 import { SettleExpenseInput } from "@/app/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -35,6 +36,16 @@ export default function Form({ id, payee }: FormProps) {
       payor: payor,
       groupId: Number(searchParams.get("groupId")),
     };
+
+    if (amount > MAX_AMOUNT) {
+          setShowErrorMessage(true);
+    
+          setErrorMessage(`Amount cannot be more than ${MAX_AMOUNT}`);
+    
+          setFormLoadingState(false);
+    
+          return;
+        }
 
     if (amount < 0) {
       setShowErrorMessage(true);

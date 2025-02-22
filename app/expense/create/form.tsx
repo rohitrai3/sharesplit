@@ -13,6 +13,7 @@ import { FormEvent, useEffect, useState } from "react";
 import EqualSplitInput from "./equalSplitInput";
 import UnequalSplitInput from "./unequalSplitInput";
 import Error from "@/app/components/error";
+import { MAX_AMOUNT } from "@/app/constants";
 
 export default function Form() {
   const searchParams = useSearchParams();
@@ -53,6 +54,16 @@ export default function Form() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormLoadingState(true);
+
+    if (totalExpense > MAX_AMOUNT) {
+      setShowErrorMessage(true);
+
+      setErrorMessage(`Amount cannot be more than ${MAX_AMOUNT}`);
+
+      setFormLoadingState(false);
+
+      return;
+    }
 
     const formData = new FormData(event.currentTarget);
     const memberAmountList: MemberAmount[] = [];
