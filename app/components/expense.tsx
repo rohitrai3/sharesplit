@@ -11,9 +11,9 @@ export default function Expense({ name, amount, transactions }: ExpenseProp) {
   const [isContentVisible, setIsContentVisible] = useState<boolean>(false);
   function showUserName(name: string, isPayor: boolean) {
     return isPayor ? (
-      <span className="text-gold-light">{name}</span>
+      <span className="text-gold-light flex-none">{name} owes</span>
     ) : (
-      <span>{name}</span>
+      <span className="flex-none">{name} owes</span>
     );
   }
 
@@ -23,20 +23,20 @@ export default function Expense({ name, amount, transactions }: ExpenseProp) {
         className="flex space-x-1"
         onClick={() => setIsContentVisible(!isContentVisible)}
       >
-        <p>{name}</p>
-        <p className="overflow-hidden opacity-50">
+        <span className="flex-none">{name}</span>
+        <span className="overflow-hidden opacity-50">
           .........................................................................................................................................................
-        </p>
-        <p className="text-gold-light">₹{amount}</p>
+        </span>
+        <span className="text-gold-light">₹{amount}</span>
       </div>
       <div className={`m-5 text-base ${isContentVisible ? "block" : "hidden"}`}>
         {transactions.map((transaction) => (
           <div key={transaction.id} className="flex space-x-1">
             {showUserName(transaction.user.name, transaction.isPayor)}
-            <p className="overflow-hidden opacity-50">
+            <span className="overflow-hidden opacity-50">
               ..................................................................................................................................................................................................................................................................................................................
-            </p>
-            <p className="text-gold-light">₹{transaction.amount}</p>
+            </span>
+            <span className="text-gold-light">₹{transaction.amount}</span>
           </div>
         ))}
       </div>
