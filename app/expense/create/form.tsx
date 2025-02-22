@@ -1,7 +1,11 @@
 "use client";
 
 import Cancel from "@/app/components/buttons/cancel";
-import { CreateExpenseInput, MemberAmount, SplitType } from "@/app/types";
+import {
+  CreateExpenseInput,
+  MemberAmount,
+  SplitType,
+} from "@/app/types";
 import { User } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -77,6 +81,16 @@ export default function Form() {
         0
       );
 
+      if (totalExpense < 0) {
+        setShowErrorMessage(true);
+
+        setErrorMessage("Amount cannot be negative");
+
+        setFormLoadingState(false);
+
+        return;
+      }
+
       if (totalMemberAmount !== totalExpense) {
         setShowErrorMessage(true);
 
@@ -106,8 +120,21 @@ export default function Form() {
       method: "POST",
       body: JSON.stringify(createExpenseInput),
     })
-      .then((res) => router.push(`/group/view/${searchParams.get("groupId")}`))
-      .catch((err) => console.log("Error adding expense: ", err));
+      .then((res) => {
+        if (res.ok) {
+          router.push(`/group/view/${searchParams.get("groupId")}`);
+        }
+        
+        return res.json();
+      })
+      .then((data) => {
+        setErrorMessage(data.error);
+        setShowErrorMessage(true);
+        setFormLoadingState(false);
+      })
+      .catch((err) => {
+        console.error("Error adding expense: ", err);
+      });
   }
 
   function getMemberAmountFormInput() {

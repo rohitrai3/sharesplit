@@ -1,6 +1,7 @@
 "use client";
 
 import Cancel from "@/app/components/buttons/cancel";
+import Error from "@/app/components/error";
 import { SettleExpenseInput } from "@/app/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -17,6 +18,8 @@ export default function Form({ id, payee }: FormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+  const [erroMessage, setErrorMessage] = useState<string>("");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,11 +36,32 @@ export default function Form({ id, payee }: FormProps) {
       groupId: Number(searchParams.get("groupId")),
     };
 
+    if (amount < 0) {
+      setShowErrorMessage(true);
+
+      setErrorMessage("Amount cannot be negative");
+
+      setFormLoadingState(false);
+
+      return;
+    }
+
     await fetch(`/api/owe/settle/${id}`, {
       method: "POST",
       body: JSON.stringify(settleExpenseInput),
     })
-      .then((res) => router.push(`/group/view/${searchParams.get("groupId")}`))
+      .then((res) => {
+        if (res.ok) {
+          router.push(`/group/view/${searchParams.get("groupId")}`)
+        }
+
+        return res.json();
+      })
+      .then((data) => {
+        setErrorMessage(data.error);
+        setShowErrorMessage(true);
+        setFormLoadingState(false);
+      })
       .catch((err) => console.log("Error settling expense: ", err));
   }
 
@@ -86,6 +110,7 @@ export default function Form({ id, payee }: FormProps) {
           <Cancel />
         </div>
       </form>
+      {showErrorMessage && <Error message={erroMessage} />}
     </div>
   );
 }

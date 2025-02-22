@@ -7,12 +7,18 @@ import {
   Prisma,
   PrismaClient,
 } from "@prisma/client";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   const settleExpenseInput: SettleExpenseInput = await request.json();
+  const amount: number = settleExpenseInput.amount;
+  
+    if (amount < 0) {
+      return NextResponse.json({ error: "Amount cannot be negative."}, { status: 500 });
+    }
+
   const session = await getSession();
   const user: User | null = await prisma.user.findUnique({
     where: {
