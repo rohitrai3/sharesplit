@@ -25,3 +25,7 @@ test("has create button", async ({ page }) => {
 test("has cancel button", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Cancel" })).toBeVisible();
 });
+
+test("has logout button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Logout" })).toBeVisible();
+});
