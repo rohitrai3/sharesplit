@@ -1,5 +1,8 @@
 import test, { expect } from "@playwright/test";
 
+// Reset storage state for this file to avoid being authenticated
+test.use({ storageState: { cookies: [], origins: []}});
+
 test.beforeEach("go to landing page", async ({ page }) => {
   await page.goto("http://localhost:3000");
 })
