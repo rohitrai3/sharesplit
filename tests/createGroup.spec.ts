@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
 
 test.beforeEach("go to create group", async ({ page }) => {
-  await page.goto("http://localhost:3000/group/create");
+  await page.goto(process.env.TEST_CREATE_GROUP_PAGE_URL!);
 });
 
 test("has username", async ({ page }) => {
