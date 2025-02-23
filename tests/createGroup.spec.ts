@@ -13,3 +13,7 @@ test("has username", async ({ page }) => {
 test("has enter group name input field", async ({ page }) => {
   await expect(page.getByLabel("Enter group name")).toBeVisible();
 });
+
+test("has enter members name input field", async ({ page }) => {
+  await expect(page.getByLabel("Enter members name")).toBeVisible();
+});
