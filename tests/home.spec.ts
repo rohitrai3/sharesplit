@@ -26,3 +26,11 @@ test("has loading while fetching groups", async ({ page }) => {
     page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
   ).toHaveCount(0);
 });
+
+test("has groups after loading is finished", async ({ page }) => {
+  await page.getByRole("heading", { name: "Loading..." }).isHidden();
+  await expect(page.getByRole("heading", { name: "Loading..." })).toBeHidden();
+  await expect(
+    page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
+  ).toBeVisible();
+});
