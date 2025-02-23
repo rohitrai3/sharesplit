@@ -5,5 +5,11 @@ test.beforeEach("go to create group", async ({ page }) => {
 });
 
 test("has username", async ({ page }) => {
-  expect(page.getByRole("link", { name: process.env.TEST_USERNAME }));
+  await expect(
+    page.getByRole("link", { name: process.env.TEST_USERNAME })
+  ).toBeVisible();
+});
+
+test("has enter group name input field", async ({ page }) => {
+  await expect(page.getByLabel("Enter group name")).toBeVisible();
 });

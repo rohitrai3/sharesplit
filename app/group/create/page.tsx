@@ -36,9 +36,12 @@ export default function CreateGroup() {
       <div className="flex-1 flex flex-col justify-center items-center">
         <form className="space-y-10" onSubmit={onSubmit}>
           <div className="space-y-0.5">
-            <label className="text-sm">Enter group name</label>
+            <label className="text-sm" htmlFor="name">
+              Enter group name
+            </label>
             <br />
             <input
+              id="name"
               className="input-field"
               type="text"
               placeholder="Ino-Shika-Cho"
@@ -47,9 +50,12 @@ export default function CreateGroup() {
             />
           </div>
           <div className="space-y-0.5">
-            <label className="text-sm">Enter members name</label>
+            <label className="text-sm" htmlFor="members">
+              Enter members name
+            </label>
             <br />
             <input
+              id="members"
               className="input-field"
               type="text"
               placeholder="ino, shikamaru, choji"

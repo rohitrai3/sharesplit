@@ -5,11 +5,15 @@ test.beforeEach("go to home page", async ({ page }) => {
 });
 
 test("has username", async ({ page }) => {
-  await expect(page.getByRole("link", { name: process.env.TEST_USERNAME })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: process.env.TEST_USERNAME })
+  ).toBeVisible();
 });
 
 test("has create group button", async ({ page }) => {
-  await expect(page.getByRole("button", { name: "Create group" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Create group" })
+  ).toBeVisible();
 });
 
 test("has logout button", async ({ page }) => {
