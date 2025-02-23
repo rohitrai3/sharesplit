@@ -21,3 +21,7 @@ test("has enter members name input field", async ({ page }) => {
 test("has create button", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Create" })).toBeVisible();
 });
+
+test("has cancel button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Cancel" })).toBeVisible();
+});
