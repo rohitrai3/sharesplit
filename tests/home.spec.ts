@@ -7,3 +7,7 @@ test.beforeEach("go to home page", async ({ page }) => {
 test("has username", async ({ page }) => {
   expect(page.getByRole("link", { name: process.env.TEST_USERNAME}));
 })
+
+test("has create group button", async ({ page }) => {
+  expect(page.getByRole("button", { name: "Create group" }));
+})
