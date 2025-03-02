@@ -46,3 +46,7 @@ test("has group after loading is finished", async ({ page }) => {
 test("has enter expense name input field", async ({ page }) => {
   await expect(page.getByLabel("Enter expense name")).toBeVisible();
 });
+
+test("has enter total expense input field", async ({ page }) => {
+  await expect(page.getByLabel("Enter total expense")).toBeVisible();
+});

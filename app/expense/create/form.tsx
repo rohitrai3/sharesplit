@@ -180,8 +180,11 @@ export default function Form() {
           />
         </div>
         <div className="flex flex-col space-y-2">
-          <label className="text-sm">Enter total expense</label>
+          <label className="text-sm" htmlFor="amount">
+            Enter total expense
+          </label>
           <input
+            id="amount"
             className="input-field"
             type="text"
             placeholder="90"
