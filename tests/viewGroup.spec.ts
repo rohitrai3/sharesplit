@@ -26,9 +26,15 @@ test("has group name and members", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
   ).toBeVisible();
-  await expect(page.getByRole("paragraph")).toHaveText(process.env.TEST_MEMBERS_UI!);
+  await expect(page.getByRole("paragraph")).toHaveText(
+    process.env.TEST_MEMBERS_UI!
+  );
 });
 
 test("has add member button", async ({ page }) => {
-  await expect(page.getByRole("button", { name: "Add member"})).toBeVisible();
-})
+  await expect(page.getByRole("button", { name: "Add member" })).toBeVisible();
+});
+
+test("has back button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Back" })).toBeVisible();
+});
