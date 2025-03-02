@@ -194,8 +194,11 @@ export default function Form() {
           />
         </div>
         <div className="flex flex-col space-y-2">
-          <label className="text-sm">Enter payor name</label>
+          <label className="text-sm" htmlFor="payor">
+            Enter payor name
+          </label>
           <input
+            id="payor"
             className="input-field"
             type="text"
             placeholder="johndoe"

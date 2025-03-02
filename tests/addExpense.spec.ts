@@ -50,3 +50,7 @@ test("has enter expense name input field", async ({ page }) => {
 test("has enter total expense input field", async ({ page }) => {
   await expect(page.getByLabel("Enter total expense")).toBeVisible();
 });
+
+test("has enter payor name input field", async ({ page }) => {
+  await expect(page.getByLabel("Enter payor name")).toBeVisible();
+});
