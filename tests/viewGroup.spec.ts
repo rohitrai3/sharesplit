@@ -42,3 +42,7 @@ test("has back button", async ({ page }) => {
 test("has add expense button", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Add expense" })).toBeVisible();
 });
+
+test("has logout button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Logout" })).toBeVisible();
+});
