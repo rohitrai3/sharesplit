@@ -60,12 +60,15 @@ export default function EqualSplitInput({
       <div className="flex justify-between">
         <div className="space-x-2">
           <input
+            id="selectAll"
             type="checkbox"
             name="selectAll"
             checked={isSelectAll}
             onChange={(e) => selectAllMembers(e)}
           />
-          <label className="text-sm">Select all</label>
+          <label className="text-sm" htmlFor="selectAll">
+            Select all
+          </label>
         </div>
         <label className="text-sm">Amount</label>
       </div>

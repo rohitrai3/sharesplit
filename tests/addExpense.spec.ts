@@ -58,3 +58,9 @@ test("has enter payor name input field", async ({ page }) => {
 test("has equal split type", async ({ page }) => {
   await expect(page.getByText("Equal", { exact: true })).toBeVisible();
 });
+
+test("has ticked select all checkbox", async ({ page }) => {
+  const selectAll = page.getByLabel("Select all");
+  await expect(selectAll).toBeVisible();
+  await expect(selectAll).toBeChecked();
+});
