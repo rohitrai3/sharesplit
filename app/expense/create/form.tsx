@@ -1,11 +1,7 @@
 "use client";
 
 import Cancel from "@/app/components/buttons/cancel";
-import {
-  CreateExpenseInput,
-  MemberAmount,
-  SplitType,
-} from "@/app/types";
+import { CreateExpenseInput, MemberAmount, SplitType } from "@/app/types";
 import { User } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -135,7 +131,7 @@ export default function Form() {
         if (res.ok) {
           router.push(`/group/view/${searchParams.get("groupId")}`);
         }
-        
+
         return res.json();
       })
       .then((data) => {
@@ -171,8 +167,11 @@ export default function Form() {
     <div className="space-y-5">
       <form className="w-96 space-y-5" onSubmit={onSubmit}>
         <div className="flex flex-col space-y-2">
-          <label className="text-sm">Enter expense name</label>
+          <label className="text-sm" htmlFor="name">
+            Enter expense name
+          </label>
           <input
+            id="name"
             className="input-field"
             type="text"
             placeholder="Supper"

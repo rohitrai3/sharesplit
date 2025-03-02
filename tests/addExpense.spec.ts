@@ -31,9 +31,9 @@ test("has loading while fetching group", async ({ page }) => {
   ).toHaveCount(0);
 });
 
-test("has groups after loading is finished", async ({ page }) => {
+test("has group after loading is finished", async ({ page }) => {
   await expect(
-    page.getByRole("heading", { name: "Loading groups..." })
+    page.getByRole("heading", { name: "Loading group..." })
   ).toBeHidden({
     timeout: 10_000,
   });
@@ -41,4 +41,8 @@ test("has groups after loading is finished", async ({ page }) => {
     page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
   ).toBeVisible();
   await expect(page.getByText(process.env.TEST_MEMBERS_UI!)).toBeVisible();
+});
+
+test("has enter expense name input field", async ({ page }) => {
+  await expect(page.getByLabel("Enter expense name")).toBeVisible();
 });
