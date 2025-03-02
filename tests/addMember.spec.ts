@@ -30,3 +30,7 @@ test("has loading while fetching group", async ({ page }) => {
     page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
   ).toHaveCount(0);
 });
+
+test("has enter members name input field", async ({ page }) => {
+  await expect(page.getByLabel("Enter members name")).toBeVisible();
+});
