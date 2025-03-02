@@ -50,4 +50,5 @@ test("has groups after loading is finished", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
   ).toBeVisible();
+  await expect(page.getByRole("paragraph")).toHaveText(process.env.TEST_MEMBERS_UI!);
 });

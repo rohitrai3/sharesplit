@@ -21,3 +21,10 @@ test("has username after loading is finished", async ({ page }) => {
     page.getByRole("link", { name: process.env.TEST_USERNAME })
   ).toBeVisible();
 });
+
+test("has group name and members", async ({ page }) => {
+  await expect(
+    page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
+  ).toBeVisible();
+  await expect(page.getByRole("paragraph")).toHaveText(process.env.TEST_MEMBERS_UI!);
+});
