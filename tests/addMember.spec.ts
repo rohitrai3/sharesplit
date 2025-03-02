@@ -38,3 +38,7 @@ test("has enter members name input field", async ({ page }) => {
 test("has add member button", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Add member" })).toBeVisible();
 });
+
+test("has cancel button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Cancel" })).toBeVisible();
+});
