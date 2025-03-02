@@ -21,3 +21,12 @@ test("has username after loading is finished", async ({ page }) => {
     page.getByRole("link", { name: process.env.TEST_USERNAME })
   ).toBeVisible();
 });
+
+test("has loading while fetching group", async ({ page }) => {
+  await expect(
+    page.getByRole("heading", { name: "Loading group..." })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
+  ).toHaveCount(0);
+});
