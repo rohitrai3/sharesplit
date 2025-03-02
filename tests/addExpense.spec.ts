@@ -30,3 +30,15 @@ test("has loading while fetching group", async ({ page }) => {
     page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
   ).toHaveCount(0);
 });
+
+test("has groups after loading is finished", async ({ page }) => {
+  await expect(
+    page.getByRole("heading", { name: "Loading groups..." })
+  ).toBeHidden({
+    timeout: 10_000,
+  });
+  await expect(
+    page.getByRole("heading", { name: process.env.TEST_GROUP_UI })
+  ).toBeVisible();
+  await expect(page.getByText(process.env.TEST_MEMBERS_UI!)).toBeVisible();
+});
