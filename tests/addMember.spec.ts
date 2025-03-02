@@ -34,3 +34,7 @@ test("has loading while fetching group", async ({ page }) => {
 test("has enter members name input field", async ({ page }) => {
   await expect(page.getByLabel("Enter members name")).toBeVisible();
 });
+
+test("has add member button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Add member" })).toBeVisible();
+});
