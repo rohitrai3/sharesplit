@@ -28,3 +28,7 @@ test("has group name and members", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByRole("paragraph")).toHaveText(process.env.TEST_MEMBERS_UI!);
 });
+
+test("has add member button", async ({ page }) => {
+  await expect(page.getByRole("button", { name: "Add member"})).toBeVisible();
+})
