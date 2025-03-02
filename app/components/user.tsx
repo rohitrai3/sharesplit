@@ -3,12 +3,13 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Loading from "./loading";
 
 export default function User() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading name="user" />;
 
   if (error) return <div>{error.message}</div>;
 

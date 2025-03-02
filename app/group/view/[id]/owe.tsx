@@ -26,7 +26,7 @@ export default function Owe({ groupId }: OweProps) {
 
   return (
     <div className="text-sm text-gold-light ml-6 space-y-2">
-      {isLoading && <Loading />}
+      {isLoading && <Loading name="owe" />}
       {getOweResponse.oweFromList.map((oweFrom, index) => (
         <p key={index}>
           {oweFrom.name} owes ₹{oweFrom.amount} to you

@@ -29,7 +29,7 @@ export default function Expenses({ groupId }: ExpensesProps) {
   return (
     <div className="text-xl ml-6 space-y-10">
       {isLoading ? (
-        <Loading />
+        <Loading name="expenses" />
       ) : (
         expenses.map((expense) => (
           <Expense

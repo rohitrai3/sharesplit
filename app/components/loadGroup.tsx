@@ -24,7 +24,7 @@ export function LoadGroup({ id }: LoadGroupProps) {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loading name="group" />
       ) : (
         <Group
           id={Number(group?.id)}

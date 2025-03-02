@@ -30,7 +30,7 @@ export default function Groups() {
   return (
     <div className="space-y-5">
       {isLoading ? (
-        <Loading />
+        <Loading name="groups" />
       ) : (
         groups.map((group) => (
           <div key={group.id}>

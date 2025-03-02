@@ -1,3 +1,7 @@
-export default function Loading() {
-  return <h1>Loading...</h1>;
+export type LoadingProps = {
+  name: string;
+}
+
+export default function Loading({ name }: LoadingProps) {
+  return <h1>Loading {name}...</h1>;
 }

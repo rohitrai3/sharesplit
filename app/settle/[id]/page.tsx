@@ -26,7 +26,7 @@ export default async function Settle({ params }: { params: { id: string } }) {
           </div>
         </>
       ) : (
-        <Loading />
+        <Loading name="settle" />
       )}
 
       <div className="place-self-end">
