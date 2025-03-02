@@ -12,3 +12,12 @@ test("has loading while fetching user", async ({ page }) => {
     page.getByRole("link", { name: process.env.TEST_USERNAME })
   ).toHaveCount(0);
 });
+
+test("has username after loading is finished", async ({ page }) => {
+  await expect(
+    page.getByRole("heading", { name: "Loading user..." })
+  ).toBeHidden();
+  await expect(
+    page.getByRole("link", { name: process.env.TEST_USERNAME })
+  ).toBeVisible();
+});
