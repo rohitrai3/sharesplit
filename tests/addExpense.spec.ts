@@ -54,3 +54,7 @@ test("has enter total expense input field", async ({ page }) => {
 test("has enter payor name input field", async ({ page }) => {
   await expect(page.getByLabel("Enter payor name")).toBeVisible();
 });
+
+test("has equal split type", async ({ page }) => {
+  await expect(page.getByText("Equal", { exact: true })).toBeVisible();
+});
